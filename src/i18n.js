@@ -6,7 +6,7 @@ const STORAGE_KEY = 'lang'
 const initial = () => {
   const saved = localStorage.getItem(STORAGE_KEY)
   if (saved && content[saved]) return saved
-  return navigator.language?.toLowerCase().startsWith('id') ? 'id' : 'en'
+  return 'id'
 }
 
 export const locale = ref(initial())
