@@ -2,77 +2,37 @@
 import CountUp from '../components/CountUp.vue'
 import CtaBanner from '../components/CtaBanner.vue'
 import PageHero from '../components/PageHero.vue'
-import { company, images, stats } from '../data/company'
+import { images } from '../data/company'
+import { locale, useContent } from '../i18n'
 
-const milestones = [
-  {
-    when: '1980-an',
-    title: 'Awal perjalanan',
-    text: 'Grup Cahaya Bulan mulai beroperasi di bidang transportasi dan logistik di Indonesia.',
-  },
-  {
-    when: '40+ tahun',
-    title: 'Jaringan domestik yang luas',
-    text: 'Membangun jaringan operasional di berbagai wilayah utama Indonesia dengan armada lebih dari 1.000 unit.',
-  },
-  {
-    when: 'Kini',
-    title: 'Fokus transportasi kontainer',
-    text: `${company.name} hadir untuk melayani pengangkutan kontainer secara aman, efisien dan profesional.`,
-  },
-  {
-    when: 'Terbaru',
-    title: 'Investasi pengangkutan limbah',
-    text: 'Diversifikasi usaha ke jasa transportasi pengangkutan limbah yang sesuai ketentuan lingkungan hidup.',
-  },
-  {
-    when: 'Ke depan',
-    title: 'Ekspansi ASEAN',
-    text: 'Pengembangan bertahap ke pasar ASEAN bersama mitra strategis di masing-masing negara.',
-  },
-]
+const t = useContent()
 </script>
 
 <template>
   <PageHero
-    label="Tentang Kami"
-    title="Berpengalaman sejak 1980-an."
-    :subtitle="`${company.name} melanjutkan pengalaman lebih dari empat dekade ${company.group} di bidang transportasi dan logistik Indonesia.`"
+    :key="locale"
+    :label="t.nav.aboutFull"
+    :title="t.about.title"
+    :subtitle="t.about.subtitle"
     :image="images.trailer"
   />
 
   <section class="section">
     <div class="container">
       <div v-reveal class="section-head">
-        <div class="label"><b>01</b> Profil</div>
-        <h2 class="h2">Fondasi kuat untuk transportasi kontainer Indonesia.</h2>
+        <div class="label"><b>01</b> {{ t.about.profileLabel }}</div>
+        <h2 class="h2">{{ t.about.profileTitle }}</h2>
       </div>
       <div v-reveal="100" class="profile">
-        <p class="profile__lead">
-          {{ company.name }} merupakan bagian dari {{ company.group }}, sebuah kelompok usaha
-          transportasi dan logistik yang telah beroperasi di Indonesia sejak tahun 1980-an.
-        </p>
+        <p class="profile__lead">{{ t.about.profileLead }}</p>
         <div class="text-muted">
-          <p>
-            Dengan pengalaman lebih dari empat dekade di bidang transportasi domestik, Grup Cahaya
-            Bulan telah membangun jaringan operasional yang luas di berbagai wilayah Indonesia serta
-            memiliki pengalaman dalam menangani berbagai kebutuhan transportasi darat dan logistik.
-          </p>
-          <p>
-            Saat ini, Grup Cahaya Bulan didukung oleh lebih dari 1.000 unit kendaraan, mulai dari
-            kendaraan dengan kapasitas sekitar 3 ton hingga kendaraan angkutan berat, yang digunakan
-            untuk melayani berbagai kebutuhan transportasi dan distribusi di Indonesia.
-          </p>
-          <p>
-            Pengalaman panjang tersebut menjadi fondasi utama bagi pengembangan {{ company.name }}
-            sebagai perusahaan yang berfokus pada transportasi kontainer dan jasa logistik.
-          </p>
+          <p v-for="(p, i) in t.about.profileText" :key="i">{{ p }}</p>
         </div>
       </div>
 
       <dl class="stats">
-        <div v-for="(s, i) in stats" :key="s.label" v-reveal="i * 100">
-          <dt><CountUp :value="s.value" /></dt>
+        <div v-for="(s, i) in t.stats" :key="i" v-reveal="i * 100">
+          <dt><CountUp :key="locale" :value="s.value" :locale="t.numberLocale" /></dt>
           <dd>{{ s.label }}</dd>
         </div>
       </dl>
@@ -82,11 +42,11 @@ const milestones = [
   <section class="section section--white">
     <div class="container">
       <div v-reveal class="section-head">
-        <div class="label"><b>02</b> Perjalanan</div>
-        <h2 class="h2">Tumbuh bersama kebutuhan transportasi Indonesia.</h2>
+        <div class="label"><b>02</b> {{ t.about.journeyLabel }}</div>
+        <h2 class="h2">{{ t.about.journeyTitle }}</h2>
       </div>
       <ol class="timeline">
-        <li v-for="(m, i) in milestones" :key="m.title" v-reveal="i * 120">
+        <li v-for="(m, i) in t.about.milestones" :key="i" v-reveal="i * 120">
           <span class="timeline__when">{{ m.when }}</span>
           <h3>{{ m.title }}</h3>
           <p>{{ m.text }}</p>
@@ -98,25 +58,13 @@ const milestones = [
   <section class="section section--dark">
     <div class="container">
       <div v-reveal class="section-head">
-        <div class="label"><b>03</b> Regional ASEAN</div>
-        <h2 class="h2">Jaringan logistik regional yang terintegrasi.</h2>
+        <div class="label"><b>03</b> {{ t.about.aseanLabel }}</div>
+        <h2 class="h2">{{ t.about.aseanTitle }}</h2>
       </div>
       <div v-reveal="100" class="profile">
-        <p class="profile__lead">
-          Dengan Indonesia sebagai basis utama, {{ company.group }} memiliki visi untuk mengembangkan
-          bisnis transportasi, logistik, transportasi kontainer dan pengangkutan limbah ke pasar ASEAN.
-        </p>
+        <p class="profile__lead">{{ t.about.aseanLead }}</p>
         <div class="dim">
-          <p>
-            Pengembangan regional dilakukan secara bertahap dengan mempertimbangkan kondisi pasar,
-            peraturan setempat, kebutuhan pelanggan serta peluang kerja sama dengan mitra strategis di
-            masing-masing negara.
-          </p>
-          <p>
-            Grup melihat peluang besar untuk membawa pengalaman dan kemampuan yang telah dibangun di
-            Indonesia ke negara-negara ASEAN, sekaligus membangun jaringan transportasi dan logistik
-            regional yang lebih terintegrasi.
-          </p>
+          <p v-for="(p, i) in t.about.aseanText" :key="i">{{ p }}</p>
         </div>
       </div>
     </div>

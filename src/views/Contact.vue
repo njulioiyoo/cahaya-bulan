@@ -1,38 +1,42 @@
 <script setup>
 import PageHero from '../components/PageHero.vue'
-import { company, images } from '../data/company'
+import { emails, images } from '../data/company'
+import { locale, useContent } from '../i18n'
+
+const t = useContent()
 </script>
 
 <template>
   <PageHero
-    label="Kontak"
-    title="Mari bicara."
-    subtitle="Kirimkan pertanyaan atau permintaan penawaran melalui email, tim kami akan segera menghubungi Anda."
+    :key="locale"
+    :label="t.nav.contact"
+    :title="t.contact.title"
+    :subtitle="t.contact.subtitle"
     :image="images.truckRed"
   />
 
   <section class="section section--white">
     <div class="container">
       <div v-reveal class="section-head">
-        <div class="label"><b>01</b> Email</div>
-        <h2 class="h2">Hubungi tim kami langsung.</h2>
+        <div class="label"><b>01</b> {{ t.common.email }}</div>
+        <h2 class="h2">{{ t.contact.emailTitle }}</h2>
       </div>
 
       <div class="emails">
         <a
-          v-for="(e, i) in company.emails"
+          v-for="(e, i) in emails"
           :key="e.address"
           v-reveal="i * 120"
           :href="`mailto:${e.address}`"
           class="email"
         >
-          <span class="label">{{ e.label }}</span>
+          <span class="label">{{ t.common.emailLabels[e.key] }}</span>
           <span class="email__address">{{ e.address }}</span>
           <span class="email__arrow">→</span>
         </a>
       </div>
 
-      <p v-reveal class="area text-muted">Wilayah operasional: seluruh Indonesia.</p>
+      <p v-reveal class="area text-muted">{{ t.contact.area }}</p>
     </div>
   </section>
 </template>

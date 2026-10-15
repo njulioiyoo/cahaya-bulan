@@ -1,10 +1,16 @@
+<script setup>
+import { useContent } from '../i18n'
+
+const t = useContent()
+</script>
+
 <template>
   <section class="section section--white">
     <div class="container cta">
-      <h2 v-reveal>Butuh transportasi kontainer atau logistik?</h2>
+      <h2 v-reveal>{{ t.cta.title }}</h2>
       <div v-reveal="150">
-        <p class="text-muted">Ceritakan kebutuhan pengangkutan Anda, tim kami akan menghubungi Anda kembali.</p>
-        <RouterLink to="/kontak" class="btn">Hubungi Kami →</RouterLink>
+        <p class="text-muted">{{ t.cta.text }}</p>
+        <RouterLink to="/kontak" class="btn">{{ t.common.contactUs }}</RouterLink>
       </div>
     </div>
   </section>

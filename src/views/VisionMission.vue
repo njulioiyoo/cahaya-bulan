@@ -1,17 +1,26 @@
 <script setup>
 import CtaBanner from '../components/CtaBanner.vue'
 import PageHero from '../components/PageHero.vue'
-import { company, images, missions, values, vision } from '../data/company'
+import { images } from '../data/company'
+import { locale, useContent } from '../i18n'
+
+const t = useContent()
 </script>
 
 <template>
-  <PageHero label="Visi & Misi" title="Arah dan komitmen kami." :subtitle="company.tagline" :image="images.inspection" />
+  <PageHero
+    :key="locale"
+    :label="t.nav.vision"
+    :title="t.visionPage.title"
+    :subtitle="t.company.tagline"
+    :image="images.inspection"
+  />
 
   <section class="section">
     <div class="container">
       <div v-reveal class="section-head">
-        <div class="label"><b>01</b> Visi</div>
-        <blockquote class="vision">{{ vision }}</blockquote>
+        <div class="label"><b>01</b> {{ t.visionPage.visionLabel }}</div>
+        <blockquote class="vision">{{ t.vision }}</blockquote>
       </div>
     </div>
   </section>
@@ -19,11 +28,11 @@ import { company, images, missions, values, vision } from '../data/company'
   <section class="section section--white">
     <div class="container">
       <div v-reveal class="section-head">
-        <div class="label"><b>02</b> Misi</div>
-        <h2 class="h2">Langkah kami mewujudkan visi.</h2>
+        <div class="label"><b>02</b> {{ t.visionPage.missionLabel }}</div>
+        <h2 class="h2">{{ t.visionPage.missionTitle }}</h2>
       </div>
       <ol class="missions">
-        <li v-for="(m, i) in missions" :key="m" v-reveal="(i % 2) * 120">
+        <li v-for="(m, i) in t.missions" :key="i" v-reveal="(i % 2) * 120">
           <span>{{ String(i + 1).padStart(2, '0') }}</span>
           <p>{{ m }}</p>
         </li>
@@ -34,14 +43,11 @@ import { company, images, missions, values, vision } from '../data/company'
   <section class="section section--dark">
     <div class="container">
       <div v-reveal class="section-head">
-        <div class="label"><b>03</b> Komitmen</div>
-        <p class="commitment__intro">
-          {{ company.name }} bersama {{ company.group }} berkomitmen memberikan solusi transportasi
-          yang:
-        </p>
+        <div class="label"><b>03</b> {{ t.visionPage.commitmentLabel }}</div>
+        <p class="commitment__intro">{{ t.visionPage.commitmentIntro }}</p>
       </div>
       <ul class="values">
-        <li v-for="(v, i) in values" :key="v" v-reveal="i * 90">{{ v }}</li>
+        <li v-for="(v, i) in t.values" :key="i" v-reveal="i * 90">{{ v }}</li>
       </ul>
     </div>
   </section>

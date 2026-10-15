@@ -1,14 +1,17 @@
 <script setup>
-import { onBeforeUnmount, onMounted, ref, watch } from 'vue'
+import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue'
 import { useRoute } from 'vue-router'
 import BrandLogo from './BrandLogo.vue'
+import LangSwitch from './LangSwitch.vue'
+import { useContent } from '../i18n'
 
-const links = [
-  { to: '/tentang', label: 'Tentang' },
-  { to: '/layanan', label: 'Layanan' },
-  { to: '/visi-misi', label: 'Visi & Misi' },
-  { to: '/kontak', label: 'Kontak' },
-]
+const t = useContent()
+const links = computed(() => [
+  { to: '/tentang', label: t.value.nav.about },
+  { to: '/layanan', label: t.value.nav.services },
+  { to: '/visi-misi', label: t.value.nav.vision },
+  { to: '/kontak', label: t.value.nav.contact },
+])
 
 const route = useRoute()
 const open = ref(false)
@@ -45,13 +48,17 @@ watch(
     <div class="container header__inner">
       <RouterLink to="/" aria-label="Beranda"><BrandLogo /></RouterLink>
 
-      <nav class="nav" :class="{ 'nav--open': open }">
-        <RouterLink v-for="l in links" :key="l.to" :to="l.to">{{ l.label }}</RouterLink>
-      </nav>
+      <div class="header__right">
+        <nav class="nav" :class="{ 'nav--open': open }">
+          <RouterLink v-for="l in links" :key="l.to" :to="l.to">{{ l.label }}</RouterLink>
+        </nav>
 
-      <button class="toggle" :aria-expanded="open" @click="open = !open">
-        {{ open ? 'Tutup' : 'Menu' }}
-      </button>
+        <LangSwitch />
+
+        <button class="toggle" :aria-expanded="open" @click="open = !open">
+          {{ open ? t.nav.close : t.nav.menu }}
+        </button>
+      </div>
     </div>
   </header>
 </template>
@@ -86,6 +93,12 @@ watch(
   display: flex;
   align-items: center;
   justify-content: space-between;
+}
+
+.header__right {
+  display: flex;
+  align-items: center;
+  gap: 40px;
 }
 
 .nav {
@@ -135,7 +148,18 @@ watch(
   color: inherit;
 }
 
+@media (max-width: 960px) {
+  .header__right,
+  .nav {
+    gap: 24px;
+  }
+}
+
 @media (max-width: 760px) {
+  .header__right {
+    gap: 16px;
+  }
+
   .toggle {
     display: block;
   }

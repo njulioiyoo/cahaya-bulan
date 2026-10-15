@@ -3,20 +3,10 @@ import { ref } from 'vue'
 import CountUp from '../components/CountUp.vue'
 import CtaBanner from '../components/CtaBanner.vue'
 import { useParallax } from '../composables/useParallax'
-import { company, images, services, stats } from '../data/company'
+import { images } from '../data/company'
+import { locale, useContent } from '../i18n'
 
-const coverage = [
-  'Pelabuhan',
-  'Terminal kontainer',
-  'Depo isotank',
-  'Gudang & pusat distribusi',
-  'Kawasan industri',
-  'Pabrik & fasilitas produksi',
-  'Lokasi pelanggan di seluruh Indonesia',
-]
-
-const heroLines = ['Menggerakkan', 'kontainer', 'Indonesia.']
-
+const t = useContent()
 const bg = ref(null)
 useParallax(bg)
 </script>
@@ -27,20 +17,17 @@ useParallax(bg)
       <img :src="images.stack" alt="Isotank" fetchpriority="high" />
     </div>
 
-    <div class="container hero__inner">
-      <div class="label fade-in" style="--d: 150ms"><b>Est. 1980-an</b> {{ company.group }}</div>
+    <div :key="locale" class="container hero__inner">
+      <div class="label fade-in" style="--d: 150ms"><b>{{ t.home.est }}</b> {{ t.company.group }}</div>
       <h1>
-        <span v-for="(l, i) in heroLines" :key="l" class="line">
+        <span v-for="(l, i) in t.home.heroLines" :key="l" class="line">
           <span :style="{ '--i': i }">{{ l }}</span>
         </span>
       </h1>
       <div class="hero__bottom">
-        <p class="fade-in" style="--d: 800ms">
-          Transportasi kontainer dan logistik yang aman, andal dan efisien — didukung pengalaman
-          lebih dari empat dekade dan armada lebih dari 1.000 unit.
-        </p>
+        <p class="fade-in" style="--d: 800ms">{{ t.home.heroText }}</p>
         <RouterLink to="/layanan" class="btn btn--light fade-in" style="--d: 950ms">
-          Lihat Layanan →
+          {{ t.common.viewServices }}
         </RouterLink>
       </div>
     </div>
@@ -54,8 +41,8 @@ useParallax(bg)
   <section class="section stats-section">
     <div class="container">
       <dl class="stats">
-        <div v-for="(s, i) in stats" :key="s.label" v-reveal="i * 100">
-          <dt><CountUp :value="s.value" /></dt>
+        <div v-for="(s, i) in t.stats" :key="i" v-reveal="i * 100">
+          <dt><CountUp :key="locale" :value="s.value" :locale="t.numberLocale" /></dt>
           <dd>{{ s.label }}</dd>
         </div>
       </dl>
@@ -65,23 +52,17 @@ useParallax(bg)
   <section class="section">
     <div class="container">
       <div v-reveal class="section-head">
-        <div class="label"><b>01</b> Tentang Kami</div>
-        <h2 class="h2">Empat dekade membangun jaringan transportasi Indonesia.</h2>
+        <div class="label"><b>01</b> {{ t.nav.aboutFull }}</div>
+        <h2 class="h2">{{ t.home.aboutTitle }}</h2>
       </div>
       <div class="about">
         <div v-reveal:img class="about__media">
-          <img :src="images.trailer" alt="Truk pengangkut isotank" class="photo" loading="lazy" />
+          <img :src="images.trailer" alt="Isotank" class="photo" loading="lazy" />
         </div>
         <div v-reveal="150" class="about__text">
-          <p class="about__lead">
-            {{ company.name }} merupakan bagian dari {{ company.group }}, kelompok usaha
-            transportasi dan logistik yang telah beroperasi di Indonesia sejak tahun 1980-an.
-          </p>
-          <p class="text-muted">
-            Dengan jaringan operasional yang luas, Grup mampu menangani kebutuhan transportasi dari
-            kawasan industri, pelabuhan, terminal, depo, gudang hingga pelanggan di berbagai daerah.
-          </p>
-          <RouterLink to="/tentang" class="link-arrow">Profil perusahaan →</RouterLink>
+          <p class="about__lead">{{ t.home.aboutLead }}</p>
+          <p class="text-muted">{{ t.home.aboutText }}</p>
+          <RouterLink to="/tentang" class="link-arrow">{{ t.common.companyProfile }}</RouterLink>
         </div>
       </div>
     </div>
@@ -90,12 +71,12 @@ useParallax(bg)
   <section class="section section--white">
     <div class="container">
       <div v-reveal class="section-head">
-        <div class="label"><b>02</b> Layanan</div>
-        <h2 class="h2">Solusi transportasi untuk kebutuhan bisnis Anda.</h2>
+        <div class="label"><b>02</b> {{ t.nav.services }}</div>
+        <h2 class="h2">{{ t.home.servicesTitle }}</h2>
       </div>
       <div class="services">
         <RouterLink
-          v-for="(s, i) in services"
+          v-for="(s, i) in t.services"
           :key="s.id"
           v-reveal="i * 100"
           :to="`/layanan#${s.id}`"
@@ -113,17 +94,17 @@ useParallax(bg)
   <section class="section section--dark">
     <div class="container">
       <div v-reveal class="section-head">
-        <div class="label"><b>03</b> Jangkauan</div>
-        <h2 class="h2">Dari pelabuhan hingga lokasi pelanggan.</h2>
+        <div class="label"><b>03</b> {{ t.home.coverageLabel }}</div>
+        <h2 class="h2">{{ t.home.coverageTitle }}</h2>
       </div>
       <div class="coverage">
         <ol>
-          <li v-for="(c, i) in coverage" :key="c" v-reveal="i * 70">
+          <li v-for="(c, i) in t.home.coverage" :key="i" v-reveal="i * 70">
             <span>{{ String(i + 1).padStart(2, '0') }}</span>{{ c }}
           </li>
         </ol>
         <div v-reveal:img="200" class="coverage__media">
-          <img :src="images.rail" alt="Isotank di depo" class="photo" loading="lazy" />
+          <img :src="images.rail" alt="Isotank" class="photo" loading="lazy" />
         </div>
       </div>
     </div>
@@ -134,13 +115,9 @@ useParallax(bg)
       <img :src="images.yard" alt="" loading="lazy" />
     </div>
     <div class="container">
-      <div v-reveal class="label"><b>04</b> Regional</div>
-      <h2 v-reveal="100" class="asean__title">Dari Indonesia menuju ASEAN.</h2>
-      <p v-reveal="200" class="asean__text">
-        Dengan Indonesia sebagai basis utama, {{ company.group }} memiliki visi mengembangkan bisnis
-        transportasi, logistik, transportasi kontainer dan pengangkutan limbah ke pasar ASEAN —
-        secara bertahap, bersama mitra strategis di masing-masing negara.
-      </p>
+      <div v-reveal class="label"><b>04</b> {{ t.home.aseanLabel }}</div>
+      <h2 v-reveal="100" class="asean__title">{{ t.home.aseanTitle }}</h2>
+      <p v-reveal="200" class="asean__text">{{ t.home.aseanText }}</p>
     </div>
   </section>
 

@@ -1,12 +1,15 @@
 <script setup>
 import { onBeforeUnmount, onMounted, ref } from 'vue'
 
-const props = defineProps({ value: { type: String, required: true } })
+const props = defineProps({
+  value: { type: String, required: true },
+  locale: { type: String, default: 'id-ID' },
+})
 
-const match = props.value.match(/^([\d.]+)(.*)$/)
-const target = match ? Number(match[1].replace(/\./g, '')) : null
+const match = props.value.match(/^([\d.,]+)(.*)$/)
+const target = match ? Number(match[1].replace(/[.,]/g, '')) : null
 const suffix = match ? match[2] : ''
-const format = (n) => n.toLocaleString('id-ID')
+const format = (n) => n.toLocaleString(props.locale)
 
 const display = ref(target === null ? props.value : `0${suffix}`)
 const el = ref(null)

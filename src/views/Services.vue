@@ -1,19 +1,23 @@
 <script setup>
 import CtaBanner from '../components/CtaBanner.vue'
 import PageHero from '../components/PageHero.vue'
-import { images, services } from '../data/company'
+import { images } from '../data/company'
+import { locale, useContent } from '../i18n'
+
+const t = useContent()
 </script>
 
 <template>
   <PageHero
-    label="Layanan"
-    title="Kontainer, logistik dan pengangkutan limbah."
-    subtitle="Didukung pengalaman lebih dari 40 tahun, armada lebih dari 1.000 unit dan jaringan operasional di berbagai wilayah Indonesia."
+    :key="locale"
+    :label="t.nav.services"
+    :title="t.servicesPage.title"
+    :subtitle="t.servicesPage.subtitle"
     :image="images.stack"
   />
 
   <section
-    v-for="(s, i) in services"
+    v-for="(s, i) in t.services"
     :id="s.id"
     :key="s.id"
     class="section service"
@@ -21,7 +25,7 @@ import { images, services } from '../data/company'
   >
     <div class="container">
       <div v-reveal class="section-head">
-        <div class="label"><b>0{{ i + 1 }}</b> Layanan</div>
+        <div class="label"><b>0{{ i + 1 }}</b> {{ t.common.service }}</div>
         <h2 class="h2">{{ s.title }}</h2>
       </div>
       <div class="service__grid" :class="{ 'service__grid--flip': i % 2 === 1 }">

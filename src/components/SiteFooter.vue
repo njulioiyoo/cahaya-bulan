@@ -1,6 +1,8 @@
 <script setup>
-import { company, services } from '../data/company'
+import { emails } from '../data/company'
+import { useContent } from '../i18n'
 
+const t = useContent()
 const year = new Date().getFullYear()
 </script>
 
@@ -8,30 +10,30 @@ const year = new Date().getFullYear()
   <footer class="footer">
     <div class="container">
       <div class="footer__top">
-        <p class="footer__statement">{{ company.tagline }}</p>
-        <RouterLink to="/kontak" class="btn btn--light">Hubungi Kami →</RouterLink>
+        <p class="footer__statement">{{ t.company.tagline }}</p>
+        <RouterLink to="/kontak" class="btn btn--light">{{ t.common.contactUs }}</RouterLink>
       </div>
 
       <div class="footer__grid">
         <div>
-          <h4>Perusahaan</h4>
-          <RouterLink to="/tentang">Tentang</RouterLink>
-          <RouterLink to="/visi-misi">Visi & Misi</RouterLink>
-          <RouterLink to="/kontak">Kontak</RouterLink>
+          <h4>{{ t.footer.company }}</h4>
+          <RouterLink to="/tentang">{{ t.nav.about }}</RouterLink>
+          <RouterLink to="/visi-misi">{{ t.nav.vision }}</RouterLink>
+          <RouterLink to="/kontak">{{ t.nav.contact }}</RouterLink>
         </div>
         <div>
-          <h4>Layanan</h4>
-          <RouterLink v-for="s in services" :key="s.id" :to="`/layanan#${s.id}`">{{ s.title }}</RouterLink>
+          <h4>{{ t.nav.services }}</h4>
+          <RouterLink v-for="s in t.services" :key="s.id" :to="`/layanan#${s.id}`">{{ s.title }}</RouterLink>
         </div>
         <div>
-          <h4>Email</h4>
-          <a v-for="e in company.emails" :key="e.address" :href="`mailto:${e.address}`">{{ e.address }}</a>
+          <h4>{{ t.common.email }}</h4>
+          <a v-for="e in emails" :key="e.address" :href="`mailto:${e.address}`">{{ e.address }}</a>
         </div>
       </div>
 
       <div class="footer__bottom">
-        <span>© {{ year }} {{ company.name }}</span>
-        <span>Bagian dari {{ company.group }}</span>
+        <span>© {{ year }} {{ t.company.name }}</span>
+        <span>{{ t.footer.partOf }}</span>
       </div>
     </div>
   </footer>
